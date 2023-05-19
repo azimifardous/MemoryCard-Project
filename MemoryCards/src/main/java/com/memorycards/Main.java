@@ -1,7 +1,9 @@
 package com.memorycards;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.print.PageLayout;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -17,12 +19,13 @@ public class Main extends Application {
         stage.setResizable(false);
         Image icon = new Image(getClass().getResource("images/logo.png").toString());
         stage.getIcons().add(icon);
-        stage.setOnCloseRequest(stage.getOnCloseRequest());
+        stage.setOnCloseRequest(event -> {
+            stage.getOnCloseRequest();
+            System.exit(0);
+        });
         stage.setScene(scene);
-                stage.show();
+        stage.show();
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
+    public static void main(String[] args) { launch(); }
 }

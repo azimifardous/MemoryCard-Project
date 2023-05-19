@@ -16,7 +16,6 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -63,8 +62,9 @@ public class MainController implements Initializable {
                         tracker.countDown--;
                         tracker.timeLimit--;
                     });
-                } else
+                } else {
                     timer.cancel();
+                }
             }
         }, 1000, 1000);
     }
@@ -106,45 +106,52 @@ public class MainController implements Initializable {
             secondCard = board.cards[selectedRow][selectedCol];
             secondCard.setFlipped(true);
 
-            // keep updating the moves label
-            int moves = tracker.trackMoves(firstCard, secondCard);
-            move.setText("Moves: " + moves);
+            // if they don't have the same reference address then compare
+            if (firstCard != secondCard) {
+                // keep updating the moves label
+                int moves = tracker.trackMoves(firstCard, secondCard);
+                move.setText("Moves: " + moves);
 
-            // as soon as we get two cards we compare them if they matches
-            int firstIndex = (firstCard.getRow() * 4) + firstCard.getColumn();
-            int secondIndex = (secondCard.getRow() * 4) + secondCard.getColumn();
+                // as soon as we get two cards we compare them if they matches
+                int firstIndex = (firstCard.getRow() * 4) + firstCard.getColumn();
+                int secondIndex = (secondCard.getRow() * 4) + secondCard.getColumn();
 
-            Button selectedCard1 = (Button) gridPane.getChildren().get(firstIndex);
-            Button selectedCard2 = (Button) gridPane.getChildren().get(secondIndex);
+                Button selectedCard1 = (Button) gridPane.getChildren().get(firstIndex);
+                Button selectedCard2 = (Button) gridPane.getChildren().get(secondIndex);
 
-            // if they are paired, remains the same view, if not, then back to question mark
-            if (firstCard.getName().equals(secondCard.getName())) {
-                selectedCard1.setDisable(true);
-                selectedCard2.setDisable(true);
-            } else {
-                // flip them back to initial state
-                firstCard.setFlipped(false);
-                secondCard.setFlipped(false);
+                // if they are paired, remains the same view, if not, then back to question mark
+                if (firstCard.getName().equals(secondCard.getName())) {
+                    selectedCard1.setDisable(true);
+                    selectedCard2.setDisable(true);
+                } else {
+                    // flip them back to initial state
+                    firstCard.setFlipped(false);
+                    secondCard.setFlipped(false);
 
-                // Shake Animation if they aren't paired
-                new Shake(selectedCard1).play();
-                new Shake(selectedCard2).play();
+                    // play the error sound
+                    Sound.playSound("error");
 
-                Image image = new Image(Board.class.getResource("images/q.png").toString());
-                ImageView view1 = new ImageView(image);
-                view1.setFitWidth(40);
-                view1.setFitHeight(40);
-                ImageView view2 = new ImageView(image);
-                view2.setFitWidth(40);
-                view2.setFitHeight(40);
+                    // Shake Animation if they aren't paired
+                    new Shake(selectedCard1).play();
+                    new Shake(selectedCard2).play();
 
-                // Delaying the unpaired cards for 1.5s and then flip them backward
-                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.5), ev -> {
-                    selectedCard1.setGraphic(view1);
-                    selectedCard2.setGraphic(view2);
-                }));
-                timeline.play();
-            }
+                    Image image = new Image(Board.class.getResource("images/q.png").toString());
+                    ImageView view1 = new ImageView(image);
+                    view1.setFitWidth(40);
+                    view1.setFitHeight(40);
+                    ImageView view2 = new ImageView(image);
+                    view2.setFitWidth(40);
+                    view2.setFitHeight(40);
+
+                    // Delaying the unpaired cards for 1.5s and then flip them backward
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.5), ev -> {
+                        selectedCard1.setGraphic(view1);
+                        selectedCard2.setGraphic(view2);
+                    }));
+                    timeline.play();
+                }
+            // else take another second card to compare
+            } else secondCard = null;
         } else {
             // else take two others
             firstCard = board.cards[selectedRow][selectedCol];
