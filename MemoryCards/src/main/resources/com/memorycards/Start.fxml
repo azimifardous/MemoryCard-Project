@@ -3,6 +3,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -11,15 +12,16 @@
    <children>
       <AnchorPane layoutX="150.0" layoutY="50.0" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: rgba( 255, 255, 255, 0.5); -fx-background-radius: 20;">
          <children>
-            <ImageView fx:id="view" fitHeight="250.0" fitWidth="300.0" layoutX="116.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
-               
-            </ImageView>
-            <Label layoutX="47.0" layoutY="262.0" text="Memory Card Game - Flipping Tiles">
+            <ImageView fx:id="view" fitHeight="250.0" fitWidth="300.0" layoutX="123.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/logoTR.png" />
+               </image></ImageView>
+            <Label layoutX="73.0" layoutY="252.0" style="-fx-font-family: Chewy; -fx-font-size: 25;" text="Memory Card Game - Flipping Tiles">
                <font>
                   <Font name="Chalkboard" size="25.0" />
                </font>
             </Label>
-            <Button fx:id="startBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="148.0" layoutY="334.0" mnemonicParsing="false" onAction="#start" prefHeight="42.0" prefWidth="200.0" style="-fx-background-color: rgba( 255, 255, 255, 0.9); -fx-background-radius: 15;" styleClass="btn" text="START">
+            <Button fx:id="startBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="327.0" mnemonicParsing="false" onAction="#start" prefHeight="42.0" prefWidth="200.0" style="-fx-background-color: rgba( 255, 255, 255, 0.9); -fx-background-radius: 15; -fx-font-family: Chewy; -fx-font-size: 20;" styleClass="btn" text="START">
                <font>
                   <Font name="Chalkboard" size="20.0" />
                </font>
@@ -27,7 +29,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="helpBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="148.0" layoutY="391.0" mnemonicParsing="false" onAction="#help" prefHeight="42.0" prefWidth="200.0" style="-fx-background-color: rgba( 255, 255, 255, 0.9); -fx-background-radius: 15;" styleClass="btn" text="HELP">
+            <Button fx:id="helpBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="384.0" mnemonicParsing="false" onAction="#help" prefHeight="42.0" prefWidth="200.0" style="-fx-background-color: rgba( 255, 255, 255, 0.9); -fx-background-radius: 15; -fx-font-family: Chewy; -fx-font-size: 20;" styleClass="btn" text="HELP">
                <font>
                   <Font name="Chalkboard" size="20.0" />
                </font>

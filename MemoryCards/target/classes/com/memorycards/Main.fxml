@@ -149,12 +149,12 @@
             </GridPane>
             <Pane layoutX="76.0" layoutY="403.0" prefHeight="55.0" prefWidth="170.0" style="-fx-background-color: rgba( 255, 255, 255, 0.9 ); -fx-background-radius: 10;">
                <children>
-                  <Label alignment="CENTER" graphicTextGap="0.0" layoutX="28.0" layoutY="17.0" text="Time:">
+                  <Label alignment="CENTER" graphicTextGap="0.0" layoutX="42.0" layoutY="14.0" style="-fx-font-family: Chewy; -fx-font-size: 20;" text="Time:">
                      <font>
                         <Font name="SansSerif Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="time" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="94.0" layoutY="16.0" text="2:00">
+                  <Label fx:id="time" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="94.0" layoutY="14.0" style="-fx-font-family: Chewy; -fx-font-size: 20;" text="2:00">
                      <font>
                         <Font name="SansSerif Bold" size="20.0" />
                      </font>
@@ -163,7 +163,7 @@
             </Pane>
             <Pane layoutX="256.0" layoutY="402.0" prefHeight="55.0" prefWidth="170.0" style="-fx-background-color: rgba( 255, 255, 255, 0.9 ); -fx-background-radius: 10;">
                <children>
-                  <Label fx:id="move" layoutX="40.0" layoutY="16.0" text="Moves: 0">
+                  <Label fx:id="move" layoutX="47.0" layoutY="15.0" style="-fx-font-family: Chewy; -fx-font-size: 20;" text="Moves: 0">
                      <font>
                         <Font name="SansSerif Bold" size="20.0" />
                      </font>

@@ -17,6 +17,13 @@ public class Board {
         }
     }
 
+    public boolean areAllCardsFlipped() {
+        for (int i = 0; i < 4; i++)
+            for (int j = 0; j < 4; j++)
+                if (!cards[i][j].isFlipped()) return false;
+        return true;
+    }
+
     private boolean isBoardFull() {
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
