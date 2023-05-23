@@ -26,32 +26,42 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainController implements Initializable {
-    @FXML GridPane gridPane;
-    @FXML Label move;
-    @FXML Label time;
-    Board board = new Board();
-    Card firstCard = null;
-    Card secondCard = null;
-    Tracker tracker = new Tracker();
+    @FXML
+    private GridPane gridPane;
+    @FXML
+    private Label move;
+    @FXML
+    private Label time;
+
+    private Board board;
+    private Tracker tracker;
+    private Card firstCard;
+    private Card secondCard;
+
+    public MainController() {
+        board = new Board();
+        tracker = new Tracker();
+        firstCard = null;
+        secondCard = null;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-       // as soon as the game starts set the initial cards view which is a question mark
-       initialCardsView();
-       // then populate the cards on the board randomly each time
-       board.populateCards();
-       // keep checking cards till a pair is found
-       checkCardsView();
-       // start the timer on the UI and update it constantly
-       startTimer();
+        // as soon as the game starts set the initial cards view which is a question mark
+        initialCardsView();
+        // then populate the cards on the board randomly each time
+        board.populateCards();
+        // keep checking cards till a pair is found
+        checkCardsView();
+        // start the timer on the UI and update it constantly
+        startTimer();
     }
 
     private void initialCardsView() {
         int card = 0;
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
-                ((Button) gridPane.getChildren().
-                        get(card)).setGraphic(getImage("q", 40, 40));
+                ((Button) gridPane.getChildren().get(card)).setGraphic(getImage("q", 40, 40));
                 card++;
             }
         }
@@ -64,7 +74,7 @@ public class MainController implements Initializable {
         int row = Integer.parseInt(rowAndCol.split(",")[0]);
         int col = Integer.parseInt(rowAndCol.split(",")[1]);
 
-        String image = board.cards[row][col].getName();
+        String image = board.getCards()[row][col].getName();
         ((Button) source).setGraphic(getImage(image, 50, 50));
     }
 
@@ -87,18 +97,24 @@ public class MainController implements Initializable {
 
     private void setCards(int selectedRow, int selectedCol) {
         if (firstCard == null) {
-            firstCard = board.cards[selectedRow][selectedCol];
+            firstCard = board.getCards()[selectedRow][selectedCol];
             firstCard.setFlipped(true);
         } else if (secondCard == null) {
-            secondCard = board.cards[selectedRow][selectedCol];
+            secondCard = board.getCards()[selectedRow][selectedCol];
             secondCard.setFlipped(true);
 
             // if they don't have the same reference address then compare
-            if (firstCard != secondCard) compareCards();
-            else secondCard = null; // else take another second card to compare
+            if (firstCard != secondCard) {
+                // keep updating the moves label
+                int moves = tracker.trackMoves(firstCard, secondCard);
+                move.setText("Moves: " + moves);
+                compareCards();
+            } else {
+                secondCard = null; // else take another second card to compare
+            }
         } else {
             // else take two others
-            firstCard = board.cards[selectedRow][selectedCol];
+            firstCard = board.getCards()[selectedRow][selectedCol];
             secondCard = null;
             // update the flip state
             firstCard.setFlipped(true);
@@ -106,39 +122,17 @@ public class MainController implements Initializable {
     }
 
     private void compareCards() {
-        // keep updating the moves label
-        int moves = tracker.trackMoves(firstCard, secondCard);
-        move.setText("Moves: " + moves);
-
-        // as soon as we get two cards we compare them if they matches
-        int firstIndex = (firstCard.getRow() * 4) + firstCard.getColumn();
-        int secondIndex = (secondCard.getRow() * 4) + secondCard.getColumn();
+        final int ROW_AND_COL = 4;
+        int firstIndex = (firstCard.getRow() * ROW_AND_COL) + firstCard.getColumn();
+        int secondIndex = (secondCard.getRow() * ROW_AND_COL) + secondCard.getColumn();
 
         Button selectedCard1 = (Button) gridPane.getChildren().get(firstIndex);
         Button selectedCard2 = (Button) gridPane.getChildren().get(secondIndex);
 
-        // if they are paired, remains the same view, if not, then back to question mark
         if (firstCard.getName().equals(secondCard.getName())) {
-            selectedCard1.setDisable(true);
-            selectedCard2.setDisable(true);
+            handleMatchedCards(selectedCard1, selectedCard2);
         } else {
-            // flip them back to initial state
-            firstCard.setFlipped(false);
-            secondCard.setFlipped(false);
-
-            // play the error sound
-            Sound.playSound("error");
-
-            // Shake Animation if they aren't paired
-            new Shake(selectedCard1).play();
-            new Shake(selectedCard2).play();
-
-            // Delaying the unpaired cards for 1.2s and then flip them backward
-            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.2), ev -> {
-                selectedCard1.setGraphic(getImage("q", 40, 40));
-                selectedCard2.setGraphic(getImage("q", 40, 40));
-            }));
-            timeline.play();
+            handleUnmatchedCards(selectedCard1, selectedCard2);
         }
     }
 
@@ -149,20 +143,23 @@ public class MainController implements Initializable {
             public void run() {
                 if (tracker.timeLimit > 0) {
                     Platform.runLater(() -> {
-                        if (tracker.timeLimit > 60) {
-                            if (tracker.getTimer() > 10) time.setText("1:" + (tracker.getTimer() - 1));
-                            else time.setText("1:0" + (tracker.getTimer() - 1));
-                        } else {
-                            if (tracker.getTimer() > 10) time.setText("0:" + (tracker.getTimer() - 1));
-                            else time.setText("0:0" + (tracker.getTimer() - 1));
-                        }
+                        int minutes = tracker.timeLimit > 60 ? 1 : 0;
+                        int seconds = tracker.getTimer() - 1;
+
+                        String minutesStr = (minutes == 0) ? "0" : "1";
+                        String secondsStr = (seconds > 10) ? String.valueOf(seconds) : "0" + seconds;
+
+                        time.setText(minutesStr + ":" + secondsStr);
+
                         tracker.timeLimit--;
                         tracker.countDown--;
                         tracker.timePlayed++;
                     });
                 } else {
                     timer.cancel();
-                    Platform.runLater(() -> {showResult(false);});
+                    Platform.runLater(() -> {
+                        showResult(false);
+                    });
                 }
             }
         }, 1000, 1000);
@@ -186,6 +183,31 @@ public class MainController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void handleMatchedCards(Button card1, Button card2) {
+        card1.setDisable(true);
+        card2.setDisable(true);
+    }
+
+    private void handleUnmatchedCards(Button card1, Button card2) {
+        // Flip the cards back to the initial state
+        firstCard.setFlipped(false);
+        secondCard.setFlipped(false);
+
+        // Play the error sound
+        Sound.playSound("error");
+
+        // Shake Animation if they aren't paired
+        new Shake(card1).play();
+        new Shake(card2).play();
+
+        // Delaying the unpaired cards for 1.2s and then flip them backward
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.2), ev -> {
+            card1.setGraphic(getImage("q", 40, 40));
+            card2.setGraphic(getImage("q", 40, 40));
+        }));
+        timeline.play();
     }
 
     private ImageView getImage(String imageName, int width, int height) {

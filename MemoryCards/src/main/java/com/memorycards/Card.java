@@ -4,12 +4,13 @@ public class Card {
     private String name;
     private int row;
     private int column;
-    private boolean isFlipped = false;
+    private boolean isFlipped;
 
     public Card(String name, int row, int column) {
         this.name = name;
         this.row = row;
         this.column = column;
+        isFlipped = false;
     }
 
     public boolean isFlipped() { return isFlipped; }

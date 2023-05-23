@@ -14,29 +14,19 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ResultController {
-    @FXML ImageView resultImage;
-    @FXML Label resultMoves;
-    @FXML Label timePlayed;
+    @FXML
+    private ImageView resultImage;
+    @FXML
+    private Label resultMoves;
+    @FXML
+    private Label timePlayed;
 
     public void setResults(boolean hasWon, int timePlayed, int moves) {
-        resultMoves.setText(String.valueOf(moves));
-        if (hasWon) {
-            if (timePlayed < 60) {
-                if (timePlayed < 10) this.timePlayed.setText("0:0" + timePlayed);
-                else this.timePlayed.setText("0:" + timePlayed);
-            } else {
-                timePlayed -= 60;
-                if (timePlayed < 10) this.timePlayed.setText("1:0" + timePlayed);
-                else this.timePlayed.setText("1:" + timePlayed);
-            }
-        } else this.timePlayed.setText("2:00");
-
-        Image result;
-        result = (hasWon) ?
-                new Image(getClass().getResource("images/ResultImages/Win.png").toString())
-                : new Image(getClass().getResource("images/ResultImages/Lose.png").toString());
-        resultImage.setImage(result);
+        setResultMoves(moves);
+        setResultTime(hasWon, timePlayed);
+        setResultImage(hasWon);
     }
+
     public void playAgain(ActionEvent event) throws IOException {
         // Load Main controller
         Parent fxmlLoader = FXMLLoader.load(getClass().getResource("Main.fxml"));
@@ -48,4 +38,25 @@ public class ResultController {
 
     // simply close the program
     public void closeGame(){ System.exit(0); }
+
+    private void setResultMoves(int moves) {
+        resultMoves.setText(String.valueOf(moves));
+    }
+
+    private void setResultTime(boolean hasWon, int timePlayed) {
+        if (hasWon) {
+            int minutes = timePlayed / 60;
+            int seconds = timePlayed % 60;
+            String timeFormatted = String.format("%d:%02d", minutes, seconds);
+            this.timePlayed.setText(timeFormatted);
+        } else {
+            this.timePlayed.setText("2:00");
+        }
+    }
+
+    private void setResultImage(boolean hasWon) {
+        String imagePath = hasWon ? "images/ResultImages/Win.png" : "images/ResultImages/Lose.png";
+        Image result = new Image(getClass().getResource(imagePath).toString());
+        resultImage.setImage(result);
+    }
 }

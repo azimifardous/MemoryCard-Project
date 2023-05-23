@@ -17,20 +17,23 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class StartController {
-    @FXML Button startBtn;
-    @FXML Button helpBtn;
-    @FXML ImageView view;
+    @FXML
+    private Button startBtn;
+    @FXML
+    private Button helpBtn;
+    @FXML
+    private ImageView view;
 
     public void start(ActionEvent event) throws IOException {
-        Parent fxmlLoader = FXMLLoader.load(getClass().getResource("Main.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader);
-        stage.setScene(scene);
-        stage.show();
+        loadFXML("Main.fxml", event);
     }
 
     public void help(ActionEvent event) throws IOException {
-        Parent fxmlLoader = FXMLLoader.load(getClass().getResource("Help.fxml"));
+        loadFXML("Help.fxml", event);
+    }
+
+    private void loadFXML(String fxmlFileName, ActionEvent event) throws IOException {
+        Parent fxmlLoader = FXMLLoader.load(getClass().getResource(fxmlFileName));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader);
         stage.setScene(scene);

@@ -1,8 +1,11 @@
 package com.memorycards;
 
 public class Board {
-   Card[][] cards = new Card[4][4]; // 4x4 Table of Cards
+   private Card[][] cards;
 
+   public Board() {
+       cards =  new Card[4][4]; // 4x4 Table of Cards
+   }
     public void populateCards() {
         int imageIndex = 0;
         while (!isBoardFull()) {
@@ -20,7 +23,8 @@ public class Board {
     public boolean areAllCardsFlipped() {
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
-                if (!cards[i][j].isFlipped()) return false;
+                if (!cards[i][j].isFlipped())
+                    return false;
         return true;
     }
 
@@ -31,4 +35,5 @@ public class Board {
         return true;
     }
 
+    public Card[][] getCards() { return cards; }
 }
