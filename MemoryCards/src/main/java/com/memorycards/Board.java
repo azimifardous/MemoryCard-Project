@@ -10,7 +10,7 @@ public class Board {
         int imageIndex = 0;
         while (!isBoardFull()) {
             String[] images = {"joker", "lotus", "money", "present", "woodpecker",
-                    "vain", "santaclause", "cormorant"};
+                    "vain", "santa-clause", "cormorant"};
 
             // let's find an image from the array
             String randomImage = images[imageIndex];
