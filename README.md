@@ -38,13 +38,8 @@ git clone https://github.com/azimifardous/MemoryCard-Project.git
 cd MemoryCard-Project/MemoryCards
 ```
 3. Finally Open the Folder with your IDE
-```
-code .
-```
 4. Run the Main.java Class
-```
-javac Main.java
-```
+
 
 ![](./Slides/25.png)
 ![](./Slides/26.png)
