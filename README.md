@@ -25,19 +25,26 @@
 ![](./Slides/24.png)
 
 ### In order to play the game, follow these steps:
-1. Clone the repository on your Desktop
+1. Open your terminal and change the Directory to Desktop
+```
+cd Desktop
+```
+2. Clone the repository on your Desktop
 ```
 git clone https://github.com/azimifardous/MemoryCard-Project.git
 ```
-2. Open the therminal and change the path of directory to the project folder
+3. Change the path of directory to the project folder
 ```
-cd Desktop/MemoryCard-Project/MemoryCards
+cd MemoryCard-Project/MemoryCards
 ```
 3. Finally Open the Folder with your IDE
 ```
 code .
 ```
-4. Run the Main Class and Play!
+4. Run the Main.java Class
+```
+javac Main.java
+```
 
 ![](./Slides/25.png)
 ![](./Slides/26.png)
